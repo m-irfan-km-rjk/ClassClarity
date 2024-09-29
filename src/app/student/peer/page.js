@@ -24,7 +24,7 @@ export default function PeerPage() {
                 data: {
                     "contents": {
                         "parts" : [{"text": free+JSON.stringify(my)+" "+JSON.stringify(input)}]
-                                        },
+                    },
                 },
                 headers: {
                     "Content-Type": "application/json"
@@ -40,15 +40,13 @@ export default function PeerPage() {
                 data: {
                     "contents": {
                         "parts" : [{"text": interest+generatedSchedule}]
-                                        },
+                    },
                 },
                 headers: {
                     "Content-Type": "application/json"
                 }
             
             });
-
-            console.log(same);
 
             const generatedIntr = responsed.data.candidates[0].content.parts[0].text;
             setIntr((prev) => {
@@ -67,12 +65,10 @@ export default function PeerPage() {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 const userData = doc.data();
-                // Check if the user is not the authenticated user and push to peers array
                 if (userData.id !== currentUserId) {
                     setPeers(prevPeers => {
                         const newPeers = new Set(prevPeers);
                         newPeers.add(userData);
-                        console.log(newPeers);
                         return Array.from(newPeers);
                     });
                 } else {
@@ -83,8 +79,6 @@ export default function PeerPage() {
             console.error("Error fetching users by course:", error);
         }
     };
-    
-    
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
@@ -106,33 +100,44 @@ export default function PeerPage() {
         return () => unsubscribe();
     }, [router]);
 
-
     return (
-        <div className="space-y-4 h-screen flex flex-col justify-center items-center">
-            <div className="bg-blue-600 head py-4 text-white container mx-auto flex items-center justify-between px-4">
-                <div className="logo flex items-center">
-                    <Image src="/logo.webp" width={150} height={67} alt="Logo" className="h-12 rounded-lg" />
+        <div className="space-y-4 min-h-screen flex flex-col items-center bg-gradient-to-r from-blue-500 to-green-500 text-white">
+            {/* Header Section */}
+            <header className="bg-blue-600 shadow-lg w-full py-4 px-6 flex justify-between items-center">
+                <div className="flex items-center">
+                    <Image src="/logo.webp" width={150} height={67} alt="Logo" className="h-12 rounded-lg shadow-lg" />
                 </div>
-                <h1 className="text-3xl font-bold text-center mx-auto">Potential Peer Group Candidates</h1>
-                <nav className="flex items-center space-x-4 text-white">
-                    <a href="#" className="hover:text-gray-200">Home</a>
-                    <a href="#" className="hover:text-gray-200">About us</a>
+                <h1 className="text-3xl font-bold mx-auto">Potential Peer</h1>
+                <nav className="space-x-4">
+                    <a href="/" className="hover:text-gray-300 transition-colors">Home</a>
+                    <a href="#" className="hover:text-gray-300 transition-colors">About Us</a>
                 </nav>
-            </div>
-            <div className="bg-gray-300 p-2 w-[80%] h-[100%] rounded-lg">
+            </header>
+
+            {/* Main Content Section */}
+            <main className="bg-gray-300 rounded-lg p-6 w-4/5 max-w-4xl shadow-xl">
                 {peers.length > 0 ? (
-                    <ul>
+                    <ul className="space-y-4">
                         {peers.map((peer) => (
-                            <li key={peer.id} className="p-2 text-center text-xl font-bold border-b border-gray-400 space-x-2">
-                                <div className="flex justify-between">{peer.name} - Courses: {peer.course_names.join(", ")}<button className="bg-blue-600 p-2 rounded-lg text-white" onClick={() => handleInterest(peer)}>Description</button></div>
-                                <div className="bg-white rounded-lg text-black">{intr[peer.name] && intr[peer.name].text}</div>
+                            <li key={peer.id} className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+                                <div className="flex justify-between items-center">
+                                    <div className="text-sm text-gray-600">{peer.name} - Courses: {peer.course_names.join(", ")}</div>
+                                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors" onClick={() => handleInterest(peer)}>
+                                        View Plan
+                                    </button>
+                                </div>
+                                {intr[peer.name] && (
+                                    <div className="bg-gray-100 p-4 mt-2 rounded-lg shadow-inner">
+                                        <p className="text-gray-700">{intr[peer.name].text}</p>
+                                    </div>
+                                )}
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p className="text-center">No peers found.</p>
+                    <p className="text-center text-lg font-semibold">No peers found.</p>
                 )}
-            </div>
+            </main>
         </div>
     );
 }

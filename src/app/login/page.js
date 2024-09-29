@@ -16,7 +16,7 @@ export default function LoginPage() {
 
     const handleLogin = async () => {
         const userCred = await signInWithEmailAndPassword(auth,email,password);
-        router.push("/components/mainPage");//Change the route here
+        router.push("/");//Change the route here
     };
 
     const handleGoogleLogin = async () => {
@@ -27,7 +27,7 @@ export default function LoginPage() {
     return (
         <div className="flex justify-center items-center w-screen h-screen bg-gray-300">
             <div className="flex flex-col gap-4 justify-center items-center bg-white rounded-lg shadow-lg p-6 w-96 border border-gray-300">
-                <Image src="/logo_small.png" width={183} height={37.5} alt="Logo" />
+                <Image src="/logo.webp" width={183} height={37.5} alt="Logo" />
                 <hr className="w-full border-gray-300 mb-4" />
                 
                 <div className="flex items-center border-b-2 border-gray-400 py-2 px-3 w-full">

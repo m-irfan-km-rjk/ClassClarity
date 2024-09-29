@@ -3,16 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { MdLock, MdMail, MdPerson, MdSchool } from "react-icons/md";
-import { GrGoogle } from "react-icons/gr";
 import { auth, firestore } from "../../../config";
-import { 
-    createUserWithEmailAndPassword, 
-    EmailAuthProvider, 
-    GoogleAuthProvider, 
-    linkWithCredential, 
-    updateProfile 
-} from "firebase/auth";
-import { signInWithPopup } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -23,29 +15,11 @@ export default function SignupPage() {
     const [uni, setUni] = useState("");
     const [error, setError] = useState(null);
     const router = useRouter();
-    const gprovider = new GoogleAuthProvider();
-    const [guser, setGuser] = useState(null);
-
-    // Google link handler
-    const handleGoogleLink = async () => {
-        try {
-            const gsigniin = await signInWithPopup(auth, gprovider);
-            setGuser(gsigniin.user);
-            setError(null); // Clear error when successful
-        } catch (error) {
-            setError('Failed to link with Google. Try again.');
-            console.error(error);
-        }
-    };
 
     // Signup handler
     const handleSignup = async () => {
         if (!username) {
             setError("Please provide a username.");
-            return;
-        }
-        if (!guser) {
-            setError("Please link your account with Google.");
             return;
         }
         if (!password) {
@@ -54,9 +28,9 @@ export default function SignupPage() {
         }
 
         try {
-            const userCred = EmailAuthProvider.credential(email, password);
-            const linkedRes = await linkWithCredential(guser, userCred); // Link Google account
-            const user = linkedRes.user;
+            // Create user with email and password
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
 
             // Update user profile
             await updateProfile(user, {
@@ -70,9 +44,9 @@ export default function SignupPage() {
                 university: uni,
             });
 
-            // Clear errors and navigate
+            // Clear errors and navigate to the schedule page
             setError(null);
-            router.push("/student/schedule"); // Change the route here
+            router.push("/");
         } catch (e) {
             if (e.code === 'auth/email-already-in-use') {
                 setError('This email is already in use.');
@@ -90,7 +64,7 @@ export default function SignupPage() {
     return (
         <div className="flex justify-center items-center w-screen h-screen bg-gray-300">
             <div className="flex flex-col gap-4 justify-center items-center bg-white rounded-lg shadow-lg p-6 w-96 border border-gray-300">
-                <Image src="/logo_small.png" width={183} height={37.5} alt="Logo" />
+                <Image src="/logo.webp" width={183} height={37.5} alt="Logo" />
                 <hr className="w-full border-gray-300 mb-4" />
                 
                 {/* Email Input */}
@@ -147,11 +121,6 @@ export default function SignupPage() {
 
                 {/* Error message */}
                 {error && <p className="w-full bg-red-400 p-2 text-center text-white">{error}</p>}
-
-                {/* Google Link Button */}
-                <button className="bg-[#177bcc] hover:bg-blue-400 rounded-lg p-2 text-white w-full font-bold flex justify-center gap-2" onClick={handleGoogleLink}>
-                    <GrGoogle size={20}/> Link With Google
-                </button>
 
                 {/* Signup Button */}
                 <button className="bg-[#177bcc] hover:bg-blue-400 rounded-lg p-2 text-white w-full font-bold" onClick={handleSignup}>
