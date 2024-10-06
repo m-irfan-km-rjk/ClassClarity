@@ -18,7 +18,7 @@ export default function OutputPage() {
     const generateData = async (input) => {
         try {
             const response = await axios.post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDnSIPJijuoOpmYKpnSMS3X5Qojmxdz6b8",
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
                 {
                     "contents": {
                         "parts": [{ "text": prompt_1 + "input : " + JSON.stringify(input) }]
@@ -32,7 +32,7 @@ export default function OutputPage() {
             );
 
             const responsed = await axios.post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDnSIPJijuoOpmYKpnSMS3X5Qojmxdz6b8",
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
                 {
                     "contents": {
                         "parts": [{ "text": description + JSON.stringify(input) }]
