@@ -19,7 +19,7 @@ export default function PeerPage() {
     const handleInterest = async (input) => {
         try {
             const response = await axios({
-                url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDnSIPJijuoOpmYKpnSMS3X5Qojmxdz6b8",
+                url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
                 method: "post",
                 data: {
                     "contents": {
@@ -35,7 +35,7 @@ export default function PeerPage() {
             setSame(JSON.parse(generatedSchedule.replace(/```json|```/g, '').trim()));
 
             const responsed = await axios({
-                url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDnSIPJijuoOpmYKpnSMS3X5Qojmxdz6b8",
+                url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
                 method: "post",
                 data: {
                     "contents": {
