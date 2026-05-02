@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ---
 
-## 📝 Usage
+##  Usage
 
 1.  **Sign Up/Login:** Create a new account providing your University details, or log in with Google.
 2.  **Input Details:** Navigate to the *Input Semester Details* section to log your current university courses, hobbies, and mandatory daily tasks.
@@ -36,7 +36,7 @@ An AI-powered web application designed to help university students manage their 
 
 ---
 
-## 🚀 Features
+##  Features
 
 *   **Secure Authentication:** User signup and login powered by Firebase Authentication (Email/Password and Google Sign-In).
 *   **Custom Semester Inputs:** Add university courses, personal interests, and day-to-day activities with descriptions and time allocations.
@@ -47,7 +47,7 @@ An AI-powered web application designed to help university students manage their 
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 *   **Framework:** [Next.js](https://nextjs.org/) (App Router)
 *   **Frontend:** React 18, [Tailwind CSS](https://tailwindcss.com/), React Icons
@@ -56,7 +56,7 @@ An AI-powered web application designed to help university students manage their 
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```text
 ├── config.js                 # Firebase initialization and configuration
